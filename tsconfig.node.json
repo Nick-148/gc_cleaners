@@ -1,0 +1,17 @@
+{
+  "extends": "astro/tsconfigs/strictest",
+  "include": [
+    "tests/e2e/**/*",
+    "playwright.config.ts",
+    "vitest.config.ts",
+    "astro.config.mjs",
+    "eslint.config.js",
+    "scripts/**/*"
+  ],
+  "exclude": ["dist"],
+  "compilerOptions": {
+    "lib": ["ESNext", "DOM"],
+    "types": ["node"],
+    "checkJs": true
+  }
+}

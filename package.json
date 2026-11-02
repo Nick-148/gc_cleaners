@@ -1,0 +1,60 @@
+{
+  "name": "scot-free-cleaning",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Website for Scot-Free Cleaning, an independent student cleaning service near Gordon College (not affiliated with Gordon College).",
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "dev:api": "wrangler pages dev --ip 127.0.0.1 --port 8788",
+    "build": "astro build",
+    "preview": "npm run build && wrangler pages dev --ip 127.0.0.1 --port 8788",
+    "typecheck": "astro check && tsc -p tsconfig.worker.json && tsc -p tsconfig.node.json",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:unit": "vitest run --project unit",
+    "test:integration": "vitest run --project integration",
+    "test:e2e": "playwright test",
+    "db:migrate:local": "wrangler d1 migrations apply DB --local",
+    "check:launch": "node scripts/check-launch-readiness.mjs",
+    "verify": "npm run format:check && npm run lint && npm run typecheck && npm test && npm run build"
+  },
+  "dependencies": {
+    "@astrojs/preact": "6.1.1",
+    "@astrojs/sitemap": "3.7.4",
+    "astro": "7.4.2",
+    "hono": "4.13.14",
+    "jose": "6.2.13",
+    "preact": "11.0.2",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "@axe-core/playwright": "4.14.0",
+    "@cloudflare/vitest-plugin": "1.4.8",
+    "@cloudflare/workers-types": "5.20261025.1",
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.64.1",
+    "@types/node": "24.19.2",
+    "eslint": "10.13.0",
+    "eslint-plugin-astro": "3.2.1",
+    "eslint-plugin-jsx-a11y-x": "0.2.0",
+    "globals": "17.13.0",
+    "prettier": "3.9.10",
+    "prettier-plugin-astro": "1.1.2",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.0",
+    "vitest": "4.1.12",
+    "wrangler": "4.153.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "fsevents@2.3.3": true,
+    "workerd@1.20261023.1": true
+  }
+}

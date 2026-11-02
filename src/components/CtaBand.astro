@@ -1,0 +1,70 @@
+---
+interface Props {
+  title: string;
+  body?: string;
+}
+const { title, body } = Astro.props;
+---
+
+<section class="cta-band">
+  <div class="container cta-band__inner">
+    <div>
+      <h2>{title}</h2>
+      {body && <p>{body}</p>}
+    </div>
+    <div class="cta-band__actions">
+      <slot>
+        <a class="btn btn--accent" href="/book">
+          Book a cleaning
+        </a>
+        <a class="btn btn--secondary cta-band__secondary" href="/quote">
+          Get a custom quote
+        </a>
+      </slot>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-band {
+    padding-block: var(--space-7);
+    background: #0d5c63;
+    color: #fbf8f3;
+  }
+  .cta-band__inner {
+    display: grid;
+    gap: var(--space-5);
+    align-items: center;
+  }
+  @media (min-width: 860px) {
+    .cta-band__inner {
+      grid-template-columns: 1.4fr 1fr;
+    }
+  }
+  .cta-band h2 {
+    color: #fbf8f3;
+  }
+  .cta-band p {
+    color: #d7e8e8;
+    margin: 0;
+    max-width: 52ch;
+  }
+  .cta-band__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+  @media (min-width: 860px) {
+    .cta-band__actions {
+      justify-content: flex-end;
+    }
+  }
+  .cta-band :global(.cta-band__secondary) {
+    --btn-fg: #fbf8f3;
+    --btn-border: #fbf8f3;
+  }
+  .cta-band :global(.cta-band__secondary:hover) {
+    --btn-bg: rgb(255 255 255 / 0.12);
+    --btn-fg: #ffffff;
+  }
+</style>

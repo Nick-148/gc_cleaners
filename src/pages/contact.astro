@@ -1,0 +1,89 @@
+---
+import IslandFallback from '../components/IslandFallback.astro';
+import PageHeader from '../components/PageHeader.astro';
+import ContactForm from '../components/islands/ContactForm';
+import { bookingRules, site } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Contact Us"
+  description="Questions, rescheduling or cancellations: send us a message, email or text."
+>
+  <PageHeader
+    eyebrow="Contact"
+    title="Get in touch"
+    lead={`Questions, rescheduling or cancellations. ${site.contact.responseTime}`}
+  />
+  <section class="section">
+    <div class="container contact-layout">
+      <ContactForm client:only="preact">
+        <IslandFallback slot="fallback" label="the contact form" />
+      </ContactForm>
+      <aside class="contact-aside" aria-label="Other ways to reach us">
+        <div class="card">
+          <h2 class="aside-heading">Other ways to reach us</h2>
+          <dl class="contact-list">
+            <dt>Email</dt>
+            <dd>
+              <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+            </dd>
+            <dt>Text</dt>
+            <dd>
+              <a href={`sms:${site.contact.phoneE164}`}>{site.contact.phoneDisplay}</a>
+            </dd>
+            <dt>Venmo</dt>
+            <dd>{site.contact.venmoHandle}</dd>
+          </dl>
+        </div>
+        <div class="callout callout--info">
+          <div>
+            <h2 class="aside-heading">Rescheduling or cancelling?</h2>
+            <p>
+              Include your booking reference (like SF-7K2Q9M). Changes are free with at least{' '}
+              {bookingRules.cancellationNoticeHours} hours’ notice.
+            </p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-layout {
+    display: grid;
+    gap: var(--space-6);
+    align-items: start;
+  }
+  @media (min-width: 1000px) {
+    .contact-layout {
+      grid-template-columns: minmax(0, 1fr) 320px;
+    }
+  }
+  .contact-aside {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .aside-heading {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-3);
+  }
+  .contact-list {
+    margin: 0;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-2) var(--space-4);
+  }
+  .contact-list dt {
+    color: var(--color-muted);
+  }
+  .contact-list dd {
+    margin: 0;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+  .callout p {
+    margin: 0;
+  }
+</style>

@@ -1,0 +1,69 @@
+---
+import '../styles/global.css';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { site } from '../config/site';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Exclude from search engines (admin, error pages). */
+  noindex?: boolean;
+  /** Render without the public header/footer chrome (admin). */
+  bare?: boolean;
+}
+
+const { title, description = site.description, noindex = false, bare = false } = Astro.props;
+const fullTitle = title === site.name ? `${site.name}: ${site.tagline}` : `${title} | ${site.name}`;
+const canonical = new URL(Astro.url.pathname.replace(/\.html$/, ''), Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0d5c63" />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
+    {site.contact.isPlaceholder && (
+      <div class="preview-banner" role="note">
+        Preview site: contact details and the Venmo handle are placeholders and will be replaced
+        before launch.
+      </div>
+    )}
+    {!bare && <Header />}
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    {!bare && <Footer />}
+  </body>
+</html>
+
+<style>
+  .preview-banner {
+    padding: var(--space-2) var(--gutter);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    text-align: center;
+  }
+  main:focus {
+    outline: none;
+  }
+</style>

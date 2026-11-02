@@ -1,0 +1,80 @@
+---
+import IslandFallback from '../components/IslandFallback.astro';
+import PageHeader from '../components/PageHeader.astro';
+import BookingWidget from '../components/islands/BookingWidget';
+import { bookingRules, site } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Book a Time"
+  description="Pick a cleaning package and an open evening or weekend window. Pay in person with cash or Venmo."
+>
+  <PageHeader
+    eyebrow="Book a Time"
+    title="Book your cleaning"
+    lead={`Open windows for the next ${bookingRules.horizonDays} days. Book at least ${bookingRules.minLeadHours} hours ahead.`}
+  />
+  <section class="section">
+    <div class="container book-layout">
+      <div>
+        <BookingWidget client:only="preact">
+          <IslandFallback slot="fallback" label="open times" />
+        </BookingWidget>
+      </div>
+      <aside class="book-aside" aria-label="Booking information">
+        <div class="callout callout--accent">
+          <div>
+            <h2 class="aside-heading">Pay in person</h2>
+            <p>
+              Payment is due when your cleaning is done, with <strong>cash</strong> or{' '}
+              <strong>Venmo</strong> ({site.contact.venmoHandle}). We never take payment online.
+            </p>
+          </div>
+        </div>
+        <div class="card">
+          <h2 class="aside-heading">Good to know</h2>
+          <ul class="check-list small">
+            <li>Someone who lives in the room must be there to let us in.</li>
+            <li>We bring all supplies.</li>
+            <li>
+              Free cancellation or rescheduling with {bookingRules.cancellationNoticeHours} hours’
+              notice through the <a href="/contact?topic=reschedule">Contact page</a>.
+            </li>
+            <li>
+              Big job or move-out? <a href="/quote">Get a custom quote</a>.
+            </li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .book-layout {
+    display: grid;
+    gap: var(--space-6);
+    align-items: start;
+  }
+  @media (min-width: 1000px) {
+    .book-layout {
+      grid-template-columns: minmax(0, 1fr) 320px;
+    }
+    .book-aside {
+      position: sticky;
+      top: 90px;
+    }
+  }
+  .book-aside {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .aside-heading {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-2);
+  }
+  .book-aside ul {
+    margin: 0;
+  }
+</style>

@@ -1,0 +1,56 @@
+---
+import IslandFallback from '../components/IslandFallback.astro';
+import PageHeader from '../components/PageHeader.astro';
+import QuoteForm from '../components/islands/QuoteForm';
+import { uploadRules } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Get a Quote"
+  description="Describe your space and upload photos for a custom cleaning estimate: move-outs, heavy messes and special jobs."
+>
+  <PageHeader
+    eyebrow="Get a Quote"
+    title="Custom quote for bigger jobs"
+    lead="Move-out cleans, heavy messes or something unusual? Tell us about it, add a few photos, and we’ll reply with a price. There’s no obligation."
+  />
+  <section class="section">
+    <div class="container quote-layout">
+      <QuoteForm client:only="preact">
+        <IslandFallback slot="fallback" label="the quote form" />
+      </QuoteForm>
+      <aside aria-label="Photo tips" class="card">
+        <h2 class="tips-heading">Photo tips</h2>
+        <ul class="check-list small">
+          <li>One wide shot of the whole room, taken from the doorway.</li>
+          <li>Close-ups of the worst spots: shower grout, stains, buildup.</li>
+          <li>Natural light helps us see what we’re pricing.</li>
+          <li>
+            Up to {uploadRules.maxFiles} photos. Only our team sees them, and they’re deleted after{' '}
+            {uploadRules.retentionDays} days.
+          </li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .quote-layout {
+    display: grid;
+    gap: var(--space-6);
+    align-items: start;
+  }
+  @media (min-width: 1000px) {
+    .quote-layout {
+      grid-template-columns: minmax(0, 1fr) 320px;
+    }
+  }
+  .tips-heading {
+    font-size: var(--text-lg);
+  }
+  aside ul {
+    margin: 0;
+  }
+</style>

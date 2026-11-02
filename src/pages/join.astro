@@ -1,0 +1,135 @@
+---
+import IslandFallback from '../components/IslandFallback.astro';
+import PageHeader from '../components/PageHeader.astro';
+import ApplyForm from '../components/islands/ApplyForm';
+import { commissionRate, packages } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { cleanerPayoutCents, formatUsd } from '../shared/money';
+
+const percent = Math.round(commissionRate * 100);
+const perks = [
+  {
+    title: 'Pick your own jobs',
+    body: 'Take the windows that fit around classes, practice and work-study.',
+  },
+  {
+    title: 'Paid per job',
+    body: `You keep ${percent}% of every job you complete. No minimum hours.`,
+  },
+  {
+    title: 'Learn the checklist',
+    body: 'We’ll walk you through exactly what to clean and how, so every job meets the same standard.',
+  },
+  {
+    title: 'Right on campus',
+    body: 'Jobs are in residence halls, so there’s no commute and no car needed.',
+  },
+];
+---
+
+<BaseLayout
+  title="Work With Us"
+  description={`Earn money cleaning dorm rooms on your schedule. Cleaners keep ${percent}% of every job.`}
+>
+  <PageHeader
+    eyebrow="Work With Us"
+    title={`Clean rooms, keep ${percent}% of every job`}
+    lead="Join a team of student cleaners. Flexible hours, simple pay and real work experience."
+  />
+
+  <section class="section">
+    <div class="container">
+      <h2>What you earn</h2>
+      <div class="table-wrap" role="region" aria-label="Earnings per job" tabindex="0">
+        <table class="earn-table">
+          <thead>
+            <tr>
+              <th scope="col">Job</th>
+              <th scope="col">Customer pays</th>
+              <th scope="col">You keep ({percent}%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {packages.map((pkg) => (
+              <tr>
+                <th scope="row">{pkg.name}</th>
+                <td>{formatUsd(pkg.priceCents)}</td>
+                <td class="earn-table__you">{formatUsd(cleanerPayoutCents(pkg.priceCents))}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">
+        Custom-quoted jobs follow the same {percent}% split. Customers pay in person; you’re paid
+        out for each completed job.
+      </p>
+      <ul class="perks" role="list">
+        {perks.map((perk) => (
+          <li class="card">
+            <h3>{perk.title}</h3>
+            <p class="muted">{perk.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--tint" aria-labelledby="apply-heading">
+    <div class="container container--narrow">
+      <h2 id="apply-heading">Apply</h2>
+      <p class="muted">Takes about three minutes. We’ll follow up by email.</p>
+      <ApplyForm client:only="preact">
+        <IslandFallback slot="fallback" label="the application form" />
+      </ApplyForm>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    margin-bottom: var(--space-3);
+  }
+  .earn-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 420px;
+  }
+  .earn-table th,
+  .earn-table td {
+    text-align: left;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .earn-table thead th {
+    background: var(--color-surface-2);
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+  }
+  .earn-table tbody tr:last-child > * {
+    border-bottom: 0;
+  }
+  .earn-table__you {
+    font-weight: 850;
+    color: var(--color-primary);
+  }
+  .perks {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-6) 0 0;
+    display: grid;
+    gap: var(--space-4);
+  }
+  @media (min-width: 720px) {
+    .perks {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .perks p {
+    margin: 0;
+  }
+</style>

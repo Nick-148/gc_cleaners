@@ -1,0 +1,89 @@
+---
+import PageHeader from '../components/PageHeader.astro';
+import { bookingRules, site } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const updated = 'November 2, 2026';
+---
+
+<BaseLayout
+  title="Terms of Service"
+  description={`The terms for booking cleanings with ${site.name}.`}
+>
+  <PageHeader eyebrow="Legal" title="Terms of service" lead={`Last updated ${updated}.`} />
+  <section class="section">
+    <div class="container container--narrow prose">
+      <h2>Who we are</h2>
+      <p>
+        {site.disclaimer} Nothing on this site is an official statement of Gordon College policy.
+      </p>
+
+      <h2>Bookings</h2>
+      <ul>
+        <li>A booking reserves a cleaning window. Your cleaner arrives during that window.</li>
+        <li>
+          Someone who lives in the room must be there to let the cleaner in. We don’t accept keys or
+          ID cards.
+        </li>
+        <li>
+          If no one is there within 15 minutes of the window starting, the visit may count as a
+          no-show.
+        </li>
+        <li>
+          We may decline or cancel a booking, for example if a booking looks fraudulent or the job
+          can’t be done safely. If we cancel, we’ll tell you as soon as possible.
+        </li>
+      </ul>
+
+      <h2>Payment</h2>
+      <p>
+        Prices are listed on our <a href="/services">Services &amp; Rates</a> page or given in a
+        custom quote. Payment is due in person, in full, when the cleaning is finished, with cash or
+        Venmo ({site.contact.venmoHandle}). We never collect payment online.
+      </p>
+
+      <h2>Cancelling and rescheduling</h2>
+      <p>
+        Cancel or reschedule for free by contacting us at least{' '}
+        {bookingRules.cancellationNoticeHours} hours before your window. Repeated late cancellations
+        or no-shows may mean we can’t accept future bookings.
+      </p>
+
+      <h2>What we do and don’t promise</h2>
+      <ul>
+        <li>We clean against the checklist published on our Services page.</li>
+        <li>
+          <strong>We can’t guarantee you’ll pass an inspection or avoid fines.</strong> Inspections
+          cover more than cleanliness, and Gordon College Residence Life decides what passes.
+        </li>
+        <li>
+          We don’t do repairs or remove college property, and we don’t clean shared floor bathrooms
+          in traditional halls.
+        </li>
+        <li>Please put away valuables and anything fragile before your visit.</li>
+      </ul>
+
+      <h2>Problems</h2>
+      <p>
+        If something on the checklist was missed or something went wrong during a visit, contact us
+        within 24 hours at <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a> and
+        we’ll work with you to make it right.
+      </p>
+
+      <h2>Changes</h2>
+      <p>
+        We may update these terms. The version on this page when you book applies to that booking.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .prose h2 {
+    font-size: var(--text-xl);
+    margin-top: var(--space-6);
+  }
+  .prose li {
+    margin-bottom: var(--space-2);
+  }
+</style>

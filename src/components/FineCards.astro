@@ -1,0 +1,82 @@
+---
+import { fines, policyVerifiedOn, RESLIFE_POLICIES_URL } from '../content/gordon-policy';
+import { formatDateWithYear } from '../shared/dates';
+import { formatUsd } from '../shared/money';
+
+interface Props {
+  /** Limit to the first N fines (Home shows a teaser). */
+  limit?: number;
+}
+const { limit } = Astro.props;
+const shown = limit === undefined ? fines : fines.slice(0, limit);
+const verified = formatDateWithYear(policyVerifiedOn);
+---
+
+<div class="fine-cards">
+  <ul role="list">
+    {shown.map((fine) => (
+      <li class="fine-card">
+        <p class="fine-card__amount">
+          {fine.qualifier === 'at least' && <span class="fine-card__qualifier">at least </span>}
+          {formatUsd(fine.amountCents)}
+          {fine.qualifier && fine.qualifier !== 'at least' && (
+            <span class="fine-card__qualifier"> {fine.qualifier}</span>
+          )}
+        </p>
+        <p class="fine-card__trigger">{fine.trigger}</p>
+        <p class="fine-card__context small muted">{fine.context}</p>
+      </li>
+    ))}
+  </ul>
+  <p class="small muted fine-cards__source">
+    Source: Gordon College{' '}
+    <a href={RESLIFE_POLICIES_URL} rel="noopener" target="_blank">
+      Residence Life Policies<span class="visually-hidden"> (opens in a new tab)</span>
+    </a>{' '}
+    (checked {verified}). Policies change, so always confirm with the official handbook.
+  </p>
+</div>
+
+<style>
+  .fine-cards ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-4);
+    display: grid;
+    gap: var(--space-4);
+  }
+  @media (min-width: 720px) {
+    .fine-cards ul {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+  }
+  .fine-card {
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-top: 5px solid var(--color-accent);
+  }
+  .fine-card__amount {
+    font-size: 2rem;
+    font-weight: 850;
+    letter-spacing: -0.03em;
+    margin: 0 0 var(--space-1);
+  }
+  .fine-card__qualifier {
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--color-muted);
+    letter-spacing: 0;
+  }
+  .fine-card__trigger {
+    font-weight: 700;
+    margin-bottom: var(--space-2);
+  }
+  .fine-card__context {
+    margin: 0;
+  }
+  .fine-cards__source {
+    margin: 0;
+  }
+</style>

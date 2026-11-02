@@ -1,0 +1,24 @@
+# Security headers for static assets served by Cloudflare Pages (ADR 0008).
+# The per-page Content-Security-Policy (script/style hashes) is emitted by Astro as a <meta> tag;
+# this header-level CSP adds the directives a <meta> tag cannot carry (frame-ancestors) and is
+# enforced alongside it. API responses get their own headers from the Functions middleware.
+
+/*
+  Strict-Transport-Security: max-age=63072000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()
+  Cross-Origin-Opener-Policy: same-origin
+  Content-Security-Policy: frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/admin
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+
+/admin/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store

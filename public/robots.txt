@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /admin
+Disallow: /api/
+
+Sitemap: https://scot-free-cleaning.pages.dev/sitemap-index.xml

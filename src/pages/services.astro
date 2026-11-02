@@ -1,0 +1,218 @@
+---
+import CtaBand from '../components/CtaBand.astro';
+import PageHeader from '../components/PageHeader.astro';
+import PriceCards from '../components/PriceCards.astro';
+import { buildings, commissionRate, packages, site } from '../config/site';
+import { inspectionChecklist } from '../content/checklists';
+import { RESLIFE_POLICIES_URL } from '../content/gordon-policy';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { formatUsd } from '../shared/money';
+
+const communalHalls = buildings.filter((b) => b.bathroomType === 'communal').map((b) => b.name);
+const separateTotal = packages
+  .filter((p) => p.id !== 'bundle')
+  .reduce((sum, p) => sum + p.priceCents, 0);
+---
+
+<BaseLayout
+  title="Services & Rates"
+  description="Room Clean $30, Bathroom Clean $40, or both for $60. See exactly what's included and the checklist we clean to."
+>
+  <PageHeader
+    eyebrow="Services & Rates"
+    title="Flat prices, a published checklist, no surprises"
+    lead={`Every visit is priced up front and paid in person with cash or Venmo (${site.contact.venmoHandle}) when we’re done.`}
+  />
+
+  <section class="section" aria-labelledby="packages-heading">
+    <div class="container">
+      <h2 id="packages-heading" class="visually-hidden">
+        Packages
+      </h2>
+      <PriceCards detailed />
+    </div>
+  </section>
+
+  <section class="section section--tint" aria-labelledby="breakdown-heading">
+    <div class="container">
+      <h2 id="breakdown-heading">Pricing breakdown</h2>
+      <div class="table-wrap" role="region" aria-labelledby="breakdown-heading" tabindex="0">
+        <table class="price-table">
+          <thead>
+            <tr>
+              <th scope="col">Package</th>
+              <th scope="col">Price</th>
+              <th scope="col">Typical time</th>
+              <th scope="col">Where</th>
+            </tr>
+          </thead>
+          <tbody>
+            {packages.map((pkg) => (
+              <tr>
+                <th scope="row">{pkg.name}</th>
+                <td>{formatUsd(pkg.priceCents)}</td>
+                <td>{pkg.duration}</td>
+                <td>
+                  {pkg.requiresPrivateBathroom ? 'Suite and apartment halls' : 'Any residence hall'}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <ul class="small muted notes">
+        <li>
+          The Room + Bathroom bundle saves{' '}
+          {formatUsd(separateTotal - (packages.find((p) => p.id === 'bundle')?.priceCents ?? 0))}{' '}
+          compared with booking both separately ({formatUsd(separateTotal)}).
+        </li>
+        <li>
+          Heavier messes, move-out cleans and anything unusual are priced individually.{' '}
+          <a href="/quote">Get a quote</a> with photos.
+        </li>
+        <li>
+          Bathroom cleaning isn’t available in halls with shared floor bathrooms (
+          {communalHalls.join(', ')}), because the college maintains those.
+        </li>
+        <li>
+          Cleaners keep {Math.round(commissionRate * 100)}% of every job. Your money goes mostly to
+          fellow students.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="checklist-heading">
+    <div class="container">
+      <span class="eyebrow">What inspectors look for</span>
+      <h2 id="checklist-heading">Our inspection-ready checklist</h2>
+      <p class="lead">
+        Items tagged <span class="badge badge--gordon">Gordon policy</span> restate a requirement
+        from the{' '}
+        <a href={RESLIFE_POLICIES_URL} rel="noopener" target="_blank">
+          Residence Life Policies<span class="visually-hidden"> (opens in a new tab)</span>
+        </a>{' '}
+        that Gordon publishes. Items tagged <span class="badge badge--ours">Our standard</span> are
+        the extra detail we clean to.
+      </p>
+      <div class="checklists">
+        {inspectionChecklist.map((group) => (
+          <section class="card checklist" aria-labelledby={`checklist-${group.id}`}>
+            <h3 id={`checklist-${group.id}`}>{group.title}</h3>
+            <ul role="list">
+              {group.items.map((item) => (
+                <li class="checklist__item">
+                  <span
+                    class:list={['checklist__icon', item.whoHandles === 'us' ? 'is-us' : 'is-you']}
+                    aria-hidden="true"
+                  />
+                  <span class="checklist__text">
+                    {item.text}
+                    <span class="checklist__meta">
+                      <span
+                        class:list={[
+                          'badge',
+                          item.basis === 'gordon' ? 'badge--gordon' : 'badge--ours',
+                        ]}
+                      >
+                        {item.basis === 'gordon' ? 'Gordon policy' : 'Our standard'}
+                      </span>
+                      <span class="badge">
+                        {item.whoHandles === 'us' ? 'We handle it' : 'On you'}
+                      </span>
+                    </span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+      <div class="callout callout--accent disclaimer-callout">
+        <p>
+          <strong>No one can guarantee you’ll pass an inspection.</strong> Inspections also cover
+          things cleaning can’t fix, such as candles, screens and furniture. We promise a thorough
+          clean against this checklist. Residence Life has the final say on what passes.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Ready when you are"
+    body="Pick a package and an open window. You only pay when we’re done."
+  />
+</BaseLayout>
+
+<style>
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    margin-bottom: var(--space-5);
+  }
+  .price-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 560px;
+  }
+  .price-table th,
+  .price-table td {
+    text-align: left;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .price-table thead th {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    background: var(--color-surface-2);
+  }
+  .price-table tbody tr:last-child > * {
+    border-bottom: 0;
+  }
+  .notes li {
+    margin-bottom: var(--space-2);
+  }
+  .checklists {
+    display: grid;
+    gap: var(--space-5);
+    margin-block: var(--space-6);
+  }
+  @media (min-width: 960px) {
+    .checklists {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .checklist ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-4);
+  }
+  .checklist__item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-3);
+  }
+  .checklist__icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.2rem;
+    border-radius: 6px;
+    border: 2px solid var(--color-primary);
+  }
+  .checklist__icon.is-us {
+    background: var(--color-primary);
+  }
+  .checklist__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+  }
+  .disclaimer-callout p {
+    margin: 0;
+  }
+</style>

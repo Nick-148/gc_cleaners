@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page not found" noindex>
+  <section class="section">
+    <div class="container container--narrow not-found">
+      <p class="eyebrow">404</p>
+      <h1>This page got cleaned up</h1>
+      <p class="lead">We couldn’t find the page you were looking for.</p>
+      <div class="actions">
+        <a class="btn" href="/">
+          Go home
+        </a>
+        <a class="btn btn--secondary" href="/book">
+          Book a cleaning
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+</style>

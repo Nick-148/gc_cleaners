@@ -1,0 +1,182 @@
+---
+import Logo from './Logo.astro';
+
+const links = [
+  { href: '/services', label: 'Services & Rates' },
+  { href: '/fine-guide', label: 'Fine Guide & FAQ' },
+  { href: '/quote', label: 'Get a Quote' },
+  { href: '/join', label: 'Work With Us' },
+  { href: '/contact', label: 'Contact' },
+];
+
+const current = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <Logo />
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      data-menu-toggle
+    >
+      <span class="menu-toggle__bars" aria-hidden="true"></span>
+      <span class="menu-toggle__label">Menu</span>
+    </button>
+    <nav id="site-nav" class="site-nav" aria-label="Main" data-menu>
+      <ul>
+        {links.map((link) => (
+          <li>
+            <a href={link.href} aria-current={current === link.href ? 'page' : undefined}>
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a class="btn btn--small site-nav__cta" href="/book">
+        Book a cleaning
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+  if (toggle && menu) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      menu.classList.toggle('is-open', open);
+    };
+    toggle.addEventListener('click', () => {
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+  }
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+    backdrop-filter: saturate(1.4) blur(10px);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    min-height: 68px;
+    flex-wrap: wrap;
+  }
+  .menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 44px;
+    padding: 0 var(--space-3);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .menu-toggle__bars,
+  .menu-toggle__bars::before,
+  .menu-toggle__bars::after {
+    display: block;
+    width: 18px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    position: relative;
+  }
+  .menu-toggle__bars::before,
+  .menu-toggle__bars::after {
+    content: '';
+    position: absolute;
+    left: 0;
+  }
+  .menu-toggle__bars::before {
+    top: -6px;
+  }
+  .menu-toggle__bars::after {
+    top: 6px;
+  }
+  .site-nav {
+    display: none;
+    width: 100%;
+    padding-bottom: var(--space-4);
+  }
+  .site-nav.is-open {
+    display: block;
+  }
+  .site-nav ul {
+    list-style: none;
+    margin: 0 0 var(--space-3);
+    padding: 0;
+  }
+  .site-nav li a {
+    display: block;
+    padding: var(--space-3) var(--space-2);
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .site-nav a[aria-current='page'] {
+    color: var(--color-primary);
+  }
+  .site-nav__cta {
+    width: 100%;
+  }
+
+  @media (min-width: 960px) {
+    .site-header__inner {
+      flex-wrap: nowrap;
+    }
+    .menu-toggle {
+      display: none;
+    }
+    .site-nav,
+    .site-nav.is-open {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      width: auto;
+      padding: 0;
+    }
+    .site-nav ul {
+      display: flex;
+      gap: var(--space-1);
+      margin: 0;
+    }
+    .site-nav li a {
+      border: 0;
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-pill);
+      font-size: var(--text-sm);
+    }
+    .site-nav li a:hover {
+      background: var(--color-surface-2);
+    }
+    .site-nav a[aria-current='page'] {
+      background: var(--color-primary-soft);
+    }
+    .site-nav__cta {
+      width: auto;
+    }
+  }
+</style>

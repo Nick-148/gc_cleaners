@@ -1,0 +1,17 @@
+# Local development secrets for `wrangler pages dev`. Copy to `.dev.vars` (git-ignored).
+# Values here override [vars] in wrangler.toml during local development only.
+
+ENVIRONMENT=development
+
+# Cloudflare Turnstile documented test secret: always passes. Never use in production.
+TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA
+
+# Local-only admin bypass (ignored unless ENVIRONMENT=development). See ADR 0005.
+DEV_ADMIN_EMAIL=owner@example.com
+
+# Email: leave RESEND_API_KEY empty to log emails to the console instead of sending.
+NOTIFY_EMAIL=owner@example.com
+RESEND_API_KEY=
+MAIL_FROM=
+
+RATE_LIMIT_SALT=local-dev-salt

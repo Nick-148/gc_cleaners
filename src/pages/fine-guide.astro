@@ -1,0 +1,267 @@
+---
+import CtaBand from '../components/CtaBand.astro';
+import FineCards from '../components/FineCards.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { betweenVisitTips } from '../content/checklists';
+import { faq } from '../content/faq';
+import {
+  cleaningResponsibilities,
+  policyVerifiedOn,
+  RESLIFE_POLICIES_URL,
+  STUDENT_HANDBOOK_URL,
+} from '../content/gordon-policy';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { formatDateWithYear } from '../shared/dates';
+
+const timeline = [
+  {
+    when: 'Move-in',
+    title: 'Fill out your Room Condition Inventory (RCI)',
+    body: 'Record every scuff, stain and existing problem. At checkout you can be charged for damage or cleaning needs that aren’t on it.',
+  },
+  {
+    when: 'First two weeks of each semester',
+    title: 'Room inspections',
+    body: 'Residence Life staff inspect rooms, point out violations and give you a deadline to fix them.',
+  },
+  {
+    when: 'After the inspection period',
+    title: 'Violations carry fines',
+    body: 'Problems noted after the inspection period are fined, and staff can come back to rooms that become a problem.',
+  },
+  {
+    when: 'Move-out',
+    title: 'In-person checkout',
+    body: 'Schedule a time to walk through the room with staff, sign the checkout form and return your keys. Skipping it is fined.',
+  },
+];
+
+const pitfalls = [
+  'Scented candles, incense or plug-in diffusers “just for the smell”',
+  'Take-out boxes in the bathroom or hallway trash instead of the main trash area',
+  'Open food and snacks that aren’t in airtight containers',
+  'An air fryer or other cooking appliance in the room',
+  'Window screens taken out to open the window wider',
+  'Lounge or common-area furniture moved into a bedroom',
+  'Soap scum, mildew and hair in suite or apartment bathrooms at checkout',
+  'Damage that was never written on the RCI at move-in',
+];
+---
+
+<BaseLayout
+  title="Fine Guide & FAQ"
+  description="A plain-language guide to Gordon College room inspections, common fines and checkout charges, with tips for keeping your room clean between visits."
+>
+  <PageHeader
+    eyebrow="Fine Guide & FAQ"
+    title="Know what inspectors look for, and what it costs"
+    lead="A plain-language summary of Gordon College’s published residence hall policies, plus answers about how Scot-Free works."
+  >
+    <p class="small muted header-note">
+      Summarized from the official{' '}
+      <a href={RESLIFE_POLICIES_URL} rel="noopener" target="_blank">
+        Residence Life Policies<span class="visually-hidden"> (opens in a new tab)</span>
+      </a>{' '}
+      and{' '}
+      <a href={STUDENT_HANDBOOK_URL} rel="noopener" target="_blank">
+        Student Handbook<span class="visually-hidden"> (opens in a new tab)</span>
+      </a>{' '}
+      (checked {formatDateWithYear(policyVerifiedOn)}). We’re not affiliated with Gordon College;
+      the official documents always win.
+    </p>
+  </PageHeader>
+
+  <nav class="container toc" aria-label="On this page">
+    <a href="#fines">Fines</a>
+    <a href="#timeline">Inspection timeline</a>
+    <a href="#pitfalls">Common pitfalls</a>
+    <a href="#tips">Tips between visits</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+
+  <section class="section" id="fines" aria-labelledby="fines-heading">
+    <div class="container">
+      <h2 id="fines-heading">Published fines</h2>
+      <FineCards />
+      <h3 class="responsibilities-heading">Cleaning responsibilities in the policies</h3>
+      <ul class="check-list">
+        {cleaningResponsibilities.map((fact) => (
+          <li>{fact.text}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--tint" id="timeline" aria-labelledby="timeline-heading">
+    <div class="container">
+      <h2 id="timeline-heading">How the inspection year works</h2>
+      <ol class="timeline" role="list">
+        {timeline.map((step) => (
+          <li class="timeline__item">
+            <p class="timeline__when">{step.when}</p>
+            <h3>{step.title}</h3>
+            <p class="muted">{step.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="pitfalls" aria-labelledby="pitfalls-heading">
+    <div class="container grid grid--2">
+      <div>
+        <h2 id="pitfalls-heading">Common inspection pitfalls</h2>
+        <p class="muted">
+          These come up again and again. Most take five minutes to fix, as long as you catch them
+          before the inspector does.
+        </p>
+      </div>
+      <ul class="pitfalls" role="list">
+        {pitfalls.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--tint" id="tips" aria-labelledby="tips-heading">
+    <div class="container">
+      <h2 id="tips-heading">Keeping your room clean between visits</h2>
+      <ul class="tips" role="list">
+        {betweenVisitTips.map((tip) => (
+          <li class="card">
+            <h3>{tip.title}</h3>
+            <p class="muted">{tip.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="faq" aria-labelledby="faq-heading">
+    <div class="container container--narrow">
+      <h2 id="faq-heading">Frequently asked questions</h2>
+      <div class="faq">
+        {faq.map((item) => (
+          <details class="faq__item" id={`faq-${item.id}`}>
+            <summary>{item.question}</summary>
+            <div class="faq__answer">
+              {item.answer.split('\n\n').map((paragraph) => (
+                <p>{paragraph}</p>
+              ))}
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Let us handle the scrubbing"
+    body="Book a clean before your next inspection or checkout."
+  />
+</BaseLayout>
+
+<style>
+  .header-note {
+    margin-top: var(--space-4);
+    max-width: 70ch;
+  }
+  .toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding-block: var(--space-4);
+  }
+  .toc a {
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .responsibilities-heading {
+    margin-top: var(--space-6);
+  }
+  .timeline {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-5) 0 0;
+    display: grid;
+    gap: var(--space-4);
+  }
+  @media (min-width: 860px) {
+    .timeline {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  .timeline__item {
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-left: 5px solid var(--color-primary);
+  }
+  .timeline__when {
+    font-size: var(--text-xs);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-primary);
+    margin-bottom: var(--space-2);
+  }
+  .timeline__item p:last-child {
+    margin: 0;
+  }
+  .pitfalls {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+  .pitfalls li {
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-sm);
+    background: var(--color-danger-soft);
+    border-left: 4px solid var(--color-danger);
+  }
+  .tips {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-5) 0 0;
+    display: grid;
+    gap: var(--space-4);
+  }
+  @media (min-width: 720px) {
+    .tips {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .tips p {
+    margin: 0;
+  }
+  .faq {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .faq__item {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+  .faq__item summary {
+    cursor: pointer;
+    padding: var(--space-4) var(--space-5);
+    font-weight: 700;
+    list-style-position: outside;
+  }
+  .faq__item[open] summary {
+    border-bottom: 1px solid var(--color-border);
+  }
+  .faq__answer {
+    padding: var(--space-4) var(--space-5) var(--space-2);
+  }
+</style>

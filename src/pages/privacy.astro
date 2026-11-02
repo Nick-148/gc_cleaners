@@ -1,0 +1,88 @@
+---
+import PageHeader from '../components/PageHeader.astro';
+import { site, uploadRules } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const updated = 'November 2, 2026';
+---
+
+<BaseLayout
+  title="Privacy Policy"
+  description={`How ${site.name} collects, uses and protects your information.`}
+>
+  <PageHeader eyebrow="Legal" title="Privacy policy" lead={`Last updated ${updated}.`} />
+  <section class="section">
+    <div class="container container--narrow prose">
+      <p>
+        {site.name} is an independent, student-run business. This policy explains what we collect
+        when you use this website and what we do with it. We are not affiliated with Gordon College,
+        and we don’t share your information with the college.
+      </p>
+
+      <h2>What we collect</h2>
+      <ul>
+        <li>
+          <strong>Bookings:</strong> your name, email, phone number, residence hall, room number,
+          chosen package and time, payment preference (cash or Venmo) and any notes you add.
+        </li>
+        <li>
+          <strong>Quote requests:</strong> your contact details, a description of the job and any
+          photos you upload.
+        </li>
+        <li>
+          <strong>Job applications:</strong> your contact details, class year, availability and your
+          answers.
+        </li>
+        <li>
+          <strong>Messages:</strong> whatever you send through the contact form.
+        </li>
+        <li>
+          <strong>Security data:</strong> to stop spam and abuse we use Cloudflare Turnstile, and we
+          keep short-lived counters keyed by a one-way hash of your IP address. We never store your
+          raw IP address.
+        </li>
+      </ul>
+      <p>We don’t take payment details online, and we don’t use advertising or tracking cookies.</p>
+
+      <h2>How we use it</h2>
+      <p>
+        Only to schedule and carry out cleanings, answer your requests, review job applications, and
+        keep the site secure. We don’t sell your information or use it for marketing.
+      </p>
+
+      <h2>Who can see it</h2>
+      <p>
+        Only the {site.name} owner and staff who need it to do the job. Your cleaner sees your name,
+        hall, room and booking details. Our website runs on Cloudflare, and we use an email provider
+        to send booking notifications. These providers process data on our behalf.
+      </p>
+
+      <h2>How long we keep it</h2>
+      <ul>
+        <li>Quote photos are deleted automatically after {uploadRules.retentionDays} days.</li>
+        <li>Messages, quote requests and unsuccessful applications are kept for up to 1 year.</li>
+        <li>Booking records are kept for up to 2 years for bookkeeping.</li>
+      </ul>
+
+      <h2>Your choices</h2>
+      <p>
+        You can ask us to show you, correct or delete your information at any time by emailing{' '}
+        <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>. We’ll respond within 30
+        days.
+      </p>
+
+      <h2>Changes</h2>
+      <p>If we change this policy, we’ll update the date at the top of this page.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .prose h2 {
+    font-size: var(--text-xl);
+    margin-top: var(--space-6);
+  }
+  .prose li {
+    margin-bottom: var(--space-2);
+  }
+</style>

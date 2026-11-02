@@ -1,0 +1,32 @@
+---
+import { site } from '../config/site';
+
+interface Props {
+  label: string;
+}
+const { label } = Astro.props;
+---
+
+<div class="card island-fallback">
+  <p class="muted" role="status">
+    <span class="spinner" aria-hidden="true"></span> Loading {label}…
+  </p>
+  <noscript>
+    <p>
+      This form needs JavaScript. You can also reach us at{' '}
+      <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a> or text{' '}
+      {site.contact.phoneDisplay}.
+    </p>
+  </noscript>
+</div>
+
+<style>
+  .island-fallback {
+    min-height: 240px;
+  }
+  .island-fallback p {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+</style>

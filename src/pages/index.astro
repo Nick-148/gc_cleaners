@@ -1,0 +1,262 @@
+---
+import CtaBand from '../components/CtaBand.astro';
+import FineCards from '../components/FineCards.astro';
+import PriceCards from '../components/PriceCards.astro';
+import { getPackage, site } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { formatUsd } from '../shared/money';
+
+const from = formatUsd(getPackage('room').priceCents);
+
+const steps = [
+  {
+    title: 'Pick a package and a time',
+    body: 'Choose a room, bathroom or combo clean and grab an open evening or weekend window. It takes about a minute.',
+  },
+  {
+    title: 'We clean to the checklist',
+    body: 'A trained student cleaner shows up with supplies and works through our inspection-ready checklist.',
+  },
+  {
+    title: 'Pay in person',
+    body: `Pay with cash or Venmo (${site.contact.venmoHandle}) when we’re done. Nothing is charged online, ever.`,
+  },
+];
+
+const reasons = [
+  {
+    title: 'Built around inspections',
+    body: 'Our checklist follows what Gordon’s published Residence Life policies ask of residents, plus the details that make a room look truly clean.',
+  },
+  {
+    title: 'Students, not strangers',
+    body: 'Your cleaner is a fellow student who knows the halls, the schedule and what inspection week feels like.',
+  },
+  {
+    title: 'Evenings and weekends',
+    body: 'Windows fit around classes: weekday evenings and weekend afternoons, with extra slots during busy weeks.',
+  },
+  {
+    title: 'Honest, simple pricing',
+    body: 'Flat prices posted up front. Big job? Send photos for a custom quote before you commit.',
+  },
+];
+---
+
+<BaseLayout title={site.name}>
+  <section class="hero">
+    <div class="container hero__inner">
+      <div class="hero__copy">
+        <span class="eyebrow">Student-run cleaning · Wenham, MA</span>
+        <h1>
+          Pass inspection. <span class="hero__accent">Skip the fine.</span>
+        </h1>
+        <p class="lead">
+          Affordable room and bathroom cleaning for Gordon College residents. Book a slot in a
+          minute, and pay in person with cash or Venmo.
+        </p>
+        <div class="hero__actions">
+          <a class="btn" href="/book">
+            Book a cleaning
+          </a>
+          <a class="btn btn--secondary" href="/services">
+            See rates
+          </a>
+        </div>
+        <p class="small muted">
+          Big mess? <a href="/quote">Get a custom quote</a> by sending a few photos.
+        </p>
+      </div>
+
+      <div class="hero__card card" aria-label="Sample inspection checklist">
+        <div class="hero__card-head">
+          <p class="hero__card-title">Inspection-ready checklist</p>
+          <span class="badge badge--ours">From {from}</span>
+        </div>
+        <ul class="check-list">
+          <li>Floors vacuumed and mopped</li>
+          <li>Surfaces dusted and wiped</li>
+          <li>Trash and take-out boxes cleared</li>
+          <li>Shower, sink and toilet scrubbed</li>
+          <li>Mirrors streak-free</li>
+        </ul>
+        <p class="small muted hero__card-foot">Paid in person · Cash or Venmo</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tint" aria-labelledby="fines-heading">
+    <div class="container">
+      <span class="eyebrow">Why it matters</span>
+      <h2 id="fines-heading">Fines and charges add up fast</h2>
+      <p class="lead">
+        Problems found at the start-of-semester inspection have to be fixed by a deadline, and
+        cleaning needs at checkout can be charged to you. A professional-level clean costs about the
+        same as a single fine and leaves you with a room you’re happy to show.
+      </p>
+      <FineCards limit={3} />
+      <p>
+        <a href="/fine-guide">Read the full fine guide →</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="how-heading">
+    <div class="container">
+      <span class="eyebrow">How it works</span>
+      <h2 id="how-heading">Three steps to a room you can stop worrying about</h2>
+      <ol class="steps" role="list">
+        {steps.map((step, i) => (
+          <li class="step">
+            <span class="step__number" aria-hidden="true">
+              {i + 1}
+            </span>
+            <h3>{step.title}</h3>
+            <p class="muted">{step.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--tint" aria-labelledby="rates-heading">
+    <div class="container">
+      <span class="eyebrow">Rates</span>
+      <h2 id="rates-heading">Simple, flat prices</h2>
+      <p class="lead">No deposits and no online payments. You pay when the job is done.</p>
+      <PriceCards />
+      <p class="small muted rates-note">
+        See exactly what’s included on <a href="/services">Services &amp; Rates</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="why-heading">
+    <div class="container">
+      <span class="eyebrow">Why Scot-Free</span>
+      <h2 id="why-heading">Made by students, for students</h2>
+      <ul class="reasons" role="list">
+        {reasons.map((reason) => (
+          <li class="card">
+            <h3>{reason.title}</h3>
+            <p class="muted">{reason.body}</p>
+          </li>
+        ))}
+      </ul>
+      <div class="callout callout--info join-callout">
+        <p>
+          <strong>Want to earn money cleaning?</strong> Cleaners keep 75% of every job and pick
+          their own hours. <a href="/join">Join the team →</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Inspection coming up?"
+    body="Evening and weekend windows fill fast before inspections and checkout. Lock in a time now."
+  />
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-block: var(--space-7);
+    background:
+      radial-gradient(48rem 26rem at 90% 10%, var(--color-primary-soft), transparent 70%),
+      radial-gradient(30rem 20rem at 0% 100%, var(--color-accent-soft), transparent 70%),
+      var(--color-bg);
+  }
+  @media (min-width: 900px) {
+    .hero {
+      padding-block: var(--space-8);
+    }
+  }
+  .hero__inner {
+    display: grid;
+    gap: var(--space-6);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .hero__inner {
+      grid-template-columns: 1.25fr 1fr;
+      gap: var(--space-7);
+    }
+  }
+  .hero h1 {
+    max-width: 14ch;
+  }
+  .hero__accent {
+    color: var(--color-primary);
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: var(--space-5) 0 var(--space-4);
+  }
+  .hero__card {
+    padding: var(--space-6);
+    box-shadow: var(--shadow-md);
+  }
+  .hero__card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+  .hero__card-title {
+    font-weight: 800;
+    margin: 0;
+  }
+  .hero__card-foot {
+    margin: var(--space-4) 0 0;
+    padding-top: var(--space-4);
+    border-top: 1px dashed var(--color-border);
+  }
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-6) 0 0;
+    display: grid;
+    gap: var(--space-5);
+    counter-reset: none;
+  }
+  @media (min-width: 860px) {
+    .steps {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .step__number {
+    display: inline-grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-bottom: var(--space-3);
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    font-weight: 850;
+  }
+  .rates-note {
+    margin-top: var(--space-5);
+  }
+  .reasons {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-6) 0;
+    display: grid;
+    gap: var(--space-4);
+  }
+  @media (min-width: 720px) {
+    .reasons {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .reasons p {
+    margin: 0;
+  }
+  .join-callout p {
+    margin: 0;
+  }
+</style>

@@ -1,0 +1,115 @@
+---
+import { site } from '../config/site';
+import Logo from './Logo.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <Logo />
+        <p class="muted small">
+          {site.tagline} Student-run cleaning for residence halls in Wenham, MA.
+        </p>
+      </div>
+      <nav aria-label="Footer">
+        <h2 class="site-footer__heading">Explore</h2>
+        <ul>
+          <li>
+            <a href="/services">Services &amp; Rates</a>
+          </li>
+          <li>
+            <a href="/book">Book a Time</a>
+          </li>
+          <li>
+            <a href="/quote">Get a Quote</a>
+          </li>
+          <li>
+            <a href="/fine-guide">Fine Guide &amp; FAQ</a>
+          </li>
+          <li>
+            <a href="/join">Work With Us</a>
+          </li>
+        </ul>
+      </nav>
+      <div>
+        <h2 class="site-footer__heading">Contact</h2>
+        <ul>
+          <li>
+            <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+          </li>
+          <li>
+            <a href={`sms:${site.contact.phoneE164}`}>Text {site.contact.phoneDisplay}</a>
+          </li>
+          <li>Venmo {site.contact.venmoHandle}</li>
+          <li>
+            <a href="/contact">Contact form</a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="site-footer__heading">Legal</h2>
+        <ul>
+          <li>
+            <a href="/privacy">Privacy</a>
+          </li>
+          <li>
+            <a href="/terms">Terms</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <p class="site-footer__disclaimer" data-testid="disclaimer">
+      <strong>Not affiliated with Gordon College.</strong> {site.disclaimer}
+    </p>
+    <p class="small muted">
+      © {year} {site.name}. All rights reserved.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: auto;
+    padding-block: var(--space-7) var(--space-5);
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+  }
+  .site-footer__grid {
+    display: grid;
+    gap: var(--space-6);
+    margin-bottom: var(--space-6);
+  }
+  @media (min-width: 720px) {
+    .site-footer__grid {
+      grid-template-columns: 1.6fr 1fr 1fr 0.8fr;
+    }
+  }
+  .site-footer__brand p {
+    margin-top: var(--space-4);
+    max-width: 34ch;
+  }
+  .site-footer__heading {
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+    margin-bottom: var(--space-3);
+  }
+  .site-footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+  }
+  .site-footer__disclaimer {
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    background: var(--color-surface-2);
+    font-size: var(--text-sm);
+  }
+</style>
