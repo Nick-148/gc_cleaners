@@ -62,4 +62,4 @@ can't be fixed now, record it in PLAN.md first.
 ## 4. Commit
 
 Conventional Commit message. Explain _why_ in the body, list notable decisions or ADRs, and
-mention that the review was done. Push only when a remote is configured (PLAN.md → B2).
+mention that the review was done. Work on a short-lived branch, push it to `origin` (GitHub) and open a pull request. `main` stays deployable.

@@ -8,7 +8,7 @@ _Last updated: 2026-11-02_
 
 **Phase: M1 complete. M2 (launch) is blocked on external setup.** The site, API and admin
 dashboard are built and verified locally: 96 unit, 62 integration and 30 end-to-end tests pass,
-axe reports no serious violations, and the CSP is clean. Nothing is deployed yet. Launch is
+axe reports no serious violations, and the CSP is clean. The code is on GitHub (`main` at `github.com/Nick-148/gc_cleaners`, public). Nothing is deployed yet. Launch is
 waiting on the owner-side items in **Blockers** below; `npm run check:launch` lists what remains.
 
 ## Milestones
@@ -30,12 +30,15 @@ waiting on the owner-side items in **Blockers** below; `npm run check:launch` li
 - [x] Abuse protection: Turnstile, honeypot, rate limiting, same-origin guard, size limits
 - [x] Email notifications (Mailer interface; console stub until configured)
 - [x] Tests: unit, integration (Workers runtime), e2e + axe
-- [x] GitLab CI: verify, e2e, preview deploys, and a manual production deploy gated by `check:launch`
+- [x] CI/CD on GitHub Actions (`.github/workflows/ci.yml`, ADR 0013): verify, e2e, preview deploys, and a
+      production deploy gated by `check:launch` and the `production` environment
 - [x] Deploy and operations docs (`docs/deploy.md`, `docs/operations.md`, `docs/api.md`)
 
 ### M2: Launch
 
 - [ ] Clear every item in **Blockers** below
+- [ ] GitHub settings: protect `main` (require the Verify and End-to-end checks), and add required
+      reviewers to the `production` environment (docs/deploy.md §6)
 - [ ] Owner reviews ADR 0011 (policy defaults, including the open question of who funds supplies),
       the site copy, and the Terms and Privacy drafts (ideally with someone qualified)
 - [ ] Provision production D1/R2, run migrations, set secrets, configure Access, deploy (`docs/deploy.md`)
@@ -58,12 +61,11 @@ waiting on the owner-side items in **Blockers** below; `npm run check:launch` li
 
 These are external dependencies, each stubbed per ADR 0012. Each one blocks **launch**, not development.
 
-| #   | Blocker                                                                                      | Stub in place                                                                                                       | Who unblocks                                             | Added      |
-| --- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- | ---------- |
-| B1  | **Real contact details and Venmo handle** (email, phone/text, @venmo)                        | Reserved placeholders in `src/config/site.ts`; `isPlaceholder` shows a preview banner and blocks production deploys | Owner                                                    | 2026-11-02 |
-| B2  | **GitLab remote URL**                                                                        | Commits are local only                                                                                              | Owner creates an empty GitLab project and shares the URL | 2026-11-02 |
-| B3  | **Cloudflare resources**: Pages project, D1 database ids, R2 buckets + 90-day lifecycle rule | Local Miniflare D1/R2; placeholder `database_id`s in `wrangler.toml`; CI deploy jobs skipped                        | Owner (Cloudflare account) using `docs/deploy.md`        | 2026-11-02 |
-| B4  | **Turnstile site key and secret**                                                            | Cloudflare's documented test keys locally; preview/production refuse test secrets and fail closed (503)             | Owner (Cloudflare dashboard)                             | 2026-11-02 |
-| B5  | **Cloudflare Access application** for `/admin*` and `/api/admin/*` + `ADMIN_EMAILS`          | `DEV_ADMIN_EMAIL` bypass in development only; elsewhere admin returns 503 until configured                          | Owner                                                    | 2026-11-02 |
-| B6  | **Email provider (Resend) + verified sending domain**                                        | `ConsoleMailer` logs a redacted line instead of sending                                                             | Owner (needs a domain)                                   | 2026-11-02 |
-| B7  | **Custom domain** (optional)                                                                 | `*.pages.dev`                                                                                                       | Owner                                                    | 2026-11-02 |
+| #   | Blocker                                                                                      | Stub in place                                                                                                       | Who unblocks                                      | Added      |
+| --- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- | ---------- |
+| B1  | **Real contact details and Venmo handle** (email, phone/text, @venmo)                        | Reserved placeholders in `src/config/site.ts`; `isPlaceholder` shows a preview banner and blocks production deploys | Owner                                             | 2026-11-02 |
+| B3  | **Cloudflare resources**: Pages project, D1 database ids, R2 buckets + 90-day lifecycle rule | Local Miniflare D1/R2; placeholder `database_id`s in `wrangler.toml`; CI deploy jobs skipped                        | Owner (Cloudflare account) using `docs/deploy.md` | 2026-11-02 |
+| B4  | **Turnstile site key and secret**                                                            | Cloudflare's documented test keys locally; preview/production refuse test secrets and fail closed (503)             | Owner (Cloudflare dashboard)                      | 2026-11-02 |
+| B5  | **Cloudflare Access application** for `/admin*` and `/api/admin/*` + `ADMIN_EMAILS`          | `DEV_ADMIN_EMAIL` bypass in development only; elsewhere admin returns 503 until configured                          | Owner                                             | 2026-11-02 |
+| B6  | **Email provider (Resend) + verified sending domain**                                        | `ConsoleMailer` logs a redacted line instead of sending                                                             | Owner (needs a domain)                            | 2026-11-02 |
+| B7  | **Custom domain** (optional)                                                                 | `*.pages.dev`                                                                                                       | Owner                                             | 2026-11-02 |

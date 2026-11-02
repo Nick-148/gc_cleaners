@@ -66,7 +66,8 @@ npm run test:e2e           # Playwright + axe against a fresh production build (
 npm run check:launch       # fails while any PLAN.md launch blocker is still stubbed
 ```
 
-`npm run verify` must pass before every commit. CI (`.gitlab-ci.yml`) runs the same steps plus e2e.
+`npm run verify` must pass before every commit. CI (`.github/workflows/ci.yml`, ADR 0013) runs the same steps
+plus e2e on every push, and handles preview and production deploys.
 
 ## Architecture map
 
