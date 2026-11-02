@@ -18,5 +18,5 @@ description: How to change the D1 database schema safely with wrangler migration
 6. Integration tests apply all migrations automatically (`tests/integration/setup.ts`), so
    run `npm run test:integration`.
 7. Production (after review and merge): `npx wrangler d1 migrations apply DB --remote --env production`.
-   This runs in CI before deploy (`.gitlab-ci.yml`). D1 Time Travel is the rollback path
+   This runs in CI before deploy (`.github/workflows/ci.yml`). D1 Time Travel is the rollback path
    (`docs/operations.md`).

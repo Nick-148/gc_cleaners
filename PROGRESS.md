@@ -5,7 +5,7 @@ Append-only work log, newest entry first. Each entry covers what changed, what w
 
 ---
 
-## 2026-11-02: Code pushed to GitHub
+## 2026-11-02: Code pushed to GitHub; CI ported to GitHub Actions
 
 **Done**
 
@@ -13,10 +13,14 @@ Append-only work log, newest entry first. Each entry covers what changed, what w
   Added it as `origin` and pushed `main`. Blocker B2 is cleared (the other blocker numbers are unchanged).
 - Updated the spec copy, AGENTS.md, PLAN.md, the deploy runbook and the pre-commit skill for GitHub.
 
+- Ported CI/CD to GitHub Actions (`.github/workflows/ci.yml`, ADR 0013) and removed `.gitlab-ci.yml`.
+  Actions are pinned to commit SHAs (checkout v7.0.1, setup-node v7.1.0, upload-artifact v7.0.2),
+  the token is read-only, and deploys are gated on the `CLOUDFLARE_ACCOUNT_ID` variable plus the
+  `production` environment.
+
 **Open**
 
-- `.gitlab-ci.yml` doesn't run on GitHub. Port it to GitHub Actions, or mirror the repo to GitLab
-  (PLAN.md → M2).
+- Owner: set the Actions secrets and variables, environment reviewers and branch protection (docs/deploy.md §6).
 
 ---
 

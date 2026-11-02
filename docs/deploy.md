@@ -47,7 +47,7 @@ Keep the **site key** for the build, and store the **secret key** as a secret:
 npx wrangler pages secret put TURNSTILE_SECRET_KEY --project-name scot-free-cleaning
 ```
 
-Set `PUBLIC_TURNSTILE_SITE_KEY` as a GitLab CI/CD variable (see step 6). It's baked into the
+Set `PUBLIC_TURNSTILE_SITE_KEY` as a GitHub Actions variable (see step 6). It's baked into the
 static build. `TURNSTILE_ALLOWED_HOSTNAMES` in `wrangler.toml` adds a server-side hostname check.
 
 ## 3. Admin access with Cloudflare Access (B5)
@@ -99,26 +99,32 @@ openssl rand -hex 32 | npx wrangler pages secret put RATE_LIMIT_SALT --project-n
 Repeat the `secret put` commands with `--env preview` for preview deployments. You can use
 Turnstile test keys there.
 
-## 6. CI/CD (GitLab)
+## 6. CI/CD (GitHub Actions)
 
-> The repository is hosted on GitHub (`github.com/Nick-148/gc_cleaners`), where `.gitlab-ci.yml` does not
-> run. Until the pipeline is ported to GitHub Actions (PLAN.md → M2), deploy manually with the commands in
-> `.claude/skills/deploy-cloudflare/SKILL.md`, or mirror the repo to GitLab to use this section as written.
+The pipeline is `.github/workflows/ci.yml` (ADR 0013). In the GitHub repo, go to
+**Settings → Secrets and variables → Actions** and add:
 
-In GitLab, go to **Settings → CI/CD → Variables** and add:
+| Kind     | Name                        | Value                                                                 |
+| -------- | --------------------------- | --------------------------------------------------------------------- |
+| Secret   | `CLOUDFLARE_API_TOKEN`      | API token with **Account → Cloudflare Pages: Edit** and **D1: Edit**  |
+| Variable | `CLOUDFLARE_ACCOUNT_ID`     | From the Cloudflare dashboard sidebar (this turns the deploy jobs on) |
+| Variable | `PUBLIC_TURNSTILE_SITE_KEY` | The Turnstile site key                                                |
 
-| Variable                    | Flags             | Value                                                                |
-| --------------------------- | ----------------- | -------------------------------------------------------------------- |
-| `CLOUDFLARE_API_TOKEN`      | Masked, Protected | API token with **Account → Cloudflare Pages: Edit** and **D1: Edit** |
-| `CLOUDFLARE_ACCOUNT_ID`     | Protected         | From the Cloudflare dashboard sidebar                                |
-| `PUBLIC_TURNSTILE_SITE_KEY` | Protected         | The production Turnstile site key                                    |
+Then in **Settings → Environments**:
+
+- Create `production` and add yourself under **Required reviewers**. Production deploys then wait
+  for your approval. Optionally restrict it to the `main` branch.
+- Create `preview` (no protection needed).
+
+And in **Settings → Branches**, add a rule for `main` that requires the **Verify** and
+**End-to-end** checks and pull requests before merging.
 
 The pipeline then:
 
-- runs `verify` and `e2e` on every push and merge request
-- deploys non-default branches to `https://<branch>.scot-free-cleaning.pages.dev`, using the preview D1/R2
-- offers a **manual** `deploy_production` job on `main`. That job runs `npm run check:launch`
-  first, so it refuses while any blocker remains
+- runs **Verify** and **End-to-end** on every push to any branch
+- deploys other branches to `https://<branch>.scot-free-cleaning.pages.dev`, using the preview D1/R2
+- deploys `main` to production after your approval. That job runs `npm run check:launch` first, so
+  it refuses while any blocker remains
 
 ## 7. Before the first production deploy (M2)
 

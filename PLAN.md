@@ -30,15 +30,15 @@ waiting on the owner-side items in **Blockers** below; `npm run check:launch` li
 - [x] Abuse protection: Turnstile, honeypot, rate limiting, same-origin guard, size limits
 - [x] Email notifications (Mailer interface; console stub until configured)
 - [x] Tests: unit, integration (Workers runtime), e2e + axe
-- [x] GitLab CI: verify, e2e, preview deploys, and a manual production deploy gated by `check:launch`
-      (written for GitLab; the code now lives on GitHub, see M2)
+- [x] CI/CD on GitHub Actions (`.github/workflows/ci.yml`, ADR 0013): verify, e2e, preview deploys, and a
+      production deploy gated by `check:launch` and the `production` environment
 - [x] Deploy and operations docs (`docs/deploy.md`, `docs/operations.md`, `docs/api.md`)
 
 ### M2: Launch
 
 - [ ] Clear every item in **Blockers** below
-- [ ] CI/CD on GitHub: the repo is hosted at `github.com/Nick-148/gc_cleaners`, where `.gitlab-ci.yml`
-      does not run. Port the pipeline to GitHub Actions (or mirror the repo to GitLab)
+- [ ] GitHub settings: protect `main` (require the Verify and End-to-end checks), and add required
+      reviewers to the `production` environment (docs/deploy.md §6)
 - [ ] Owner reviews ADR 0011 (policy defaults, including the open question of who funds supplies),
       the site copy, and the Terms and Privacy drafts (ideally with someone qualified)
 - [ ] Provision production D1/R2, run migrations, set secrets, configure Access, deploy (`docs/deploy.md`)
