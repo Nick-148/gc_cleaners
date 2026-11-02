@@ -63,6 +63,6 @@ We're building a production-grade, website. This is a professional-grade website
 - **Availability model:** A recurring weekly schedule of cleaning windows, each with a capacity (number of jobs at once). Admins can block dates or windows and add extra one-off slots, for example during inspection week. Slots close automatically when full.
 - **Contact info / Venmo:** Use clearly marked placeholders for now (email, phone/text number, Venmo handle), kept in one config file. Replacing them is a launch blocker tracked in `PLAN.md`.
 - **Domain / email:** No domain yet; launch on `*.pages.dev`. Email sending sits behind an interface: it logs in development and uses Resend once a domain is verified. Customers always get an on-screen confirmation.
-- **Git hosting:** Commit locally, with a code review before each commit. The user will create an empty GitLab project and provide its URL; add the remote and push then.
+- **Git hosting:** Commit locally, with a code review before each commit. The owner provided a **GitHub** repository instead of GitLab: `https://github.com/Nick-148/gc_cleaners` (public). Push there.
 - **Project location:** `~/Developer/scot-free-cleaning`.
 - **Defaults chosen without asking** (recorded as ADRs in the repo): cancellation/reschedule with at least 24 hours' notice via the contact page; quote photos limited to 5 images, 10 MB each, stored privately and deleted after 90 days; Cloudflare Turnstile for bot protection on every form.

@@ -5,6 +5,21 @@ Append-only work log, newest entry first. Each entry covers what changed, what w
 
 ---
 
+## 2026-11-02: Code pushed to GitHub
+
+**Done**
+
+- The owner provided `https://github.com/Nick-148/gc_cleaners` (public, GitHub rather than GitLab).
+  Added it as `origin` and pushed `main`. Blocker B2 is cleared (the other blocker numbers are unchanged).
+- Updated the spec copy, AGENTS.md, PLAN.md, the deploy runbook and the pre-commit skill for GitHub.
+
+**Open**
+
+- `.gitlab-ci.yml` doesn't run on GitHub. Port it to GitHub Actions, or mirror the repo to GitLab
+  (PLAN.md → M2).
+
+---
+
 ## 2026-11-02: M1 complete (site, API, admin, tests, CI)
 
 **Done**

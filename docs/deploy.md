@@ -101,6 +101,10 @@ Turnstile test keys there.
 
 ## 6. CI/CD (GitLab)
 
+> The repository is hosted on GitHub (`github.com/Nick-148/gc_cleaners`), where `.gitlab-ci.yml` does not
+> run. Until the pipeline is ported to GitHub Actions (PLAN.md → M2), deploy manually with the commands in
+> `.claude/skills/deploy-cloudflare/SKILL.md`, or mirror the repo to GitLab to use this section as written.
+
 In GitLab, go to **Settings → CI/CD → Variables** and add:
 
 | Variable                    | Flags             | Value                                                                |
